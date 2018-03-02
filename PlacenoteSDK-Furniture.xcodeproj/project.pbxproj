@@ -1,0 +1,456 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0283677A7F7A4A3132598192 /* Pods_PlacenoteSDK_Planes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B7E3832642C43A34F1DBF3 /* Pods_PlacenoteSDK_Planes.framework */; };
+		AF66AF282026215E001F716D /* ModelLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF66AF272026215E001F716D /* ModelLoc.swift */; };
+		AF74DFB3202F7804007616ED /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = AF74DFB2202F7804007616ED /* art.scnassets */; };
+		AFC08D1E203B966C00C153D2 /* ReticleAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC08D1D203B966C00C153D2 /* ReticleAR.swift */; };
+		AFE195CA200ECAEB00924318 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE195C9200ECAEB00924318 /* AppDelegate.swift */; };
+		AFE195CC200ECAEB00924318 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE195CB200ECAEB00924318 /* ViewController.swift */; };
+		AFE195CF200ECAEB00924318 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFE195CD200ECAEB00924318 /* Main.storyboard */; };
+		AFE195D1200ECAEB00924318 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFE195D0200ECAEB00924318 /* Assets.xcassets */; };
+		AFE195D4200ECAEB00924318 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFE195D2200ECAEB00924318 /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		388FE97A4DB8707D2718DC26 /* Pods-PlacenoteSDK-Planes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlacenoteSDK-Planes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PlacenoteSDK-Planes/Pods-PlacenoteSDK-Planes.debug.xcconfig"; sourceTree = "<group>"; };
+		75B7E3832642C43A34F1DBF3 /* Pods_PlacenoteSDK_Planes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlacenoteSDK_Planes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AD7ABD26FC9D36EAA0373749D2A5428 /* Placenote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Placenote.framework; sourceTree = "<group>"; };
+		918EF89CC6AB5746D67112BB /* Pods-PlacenoteSDK-Planes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlacenoteSDK-Planes.release.xcconfig"; path = "Pods/Target Support Files/Pods-PlacenoteSDK-Planes/Pods-PlacenoteSDK-Planes.release.xcconfig"; sourceTree = "<group>"; };
+		AF3084D22045BFEE0091F9F7 /* PlacenoteSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlacenoteSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF66AF272026215E001F716D /* ModelLoc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelLoc.swift; sourceTree = "<group>"; };
+		AF74DFB2202F7804007616ED /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		AFC08D1D203B966C00C153D2 /* ReticleAR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReticleAR.swift; sourceTree = "<group>"; };
+		AFC08D3120421C6500C153D2 /* PlacenoteSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlacenoteSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFC08D3720421C8700C153D2 /* PlacenoteSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlacenoteSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFE195C6200ECAEA00924318 /* PlacenoteSDK-Furniture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PlacenoteSDK-Furniture.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFE195C9200ECAEB00924318 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AFE195CB200ECAEB00924318 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		AFE195CE200ECAEB00924318 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		AFE195D0200ECAEB00924318 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AFE195D3200ECAEB00924318 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AFE195D5200ECAEB00924318 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AFE195C3200ECAEA00924318 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0283677A7F7A4A3132598192 /* Pods_PlacenoteSDK_Planes.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5DAF87F6EB72DD72C1C5E92D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AFC08D3720421C8700C153D2 /* PlacenoteSDK.framework */,
+				AFC08D3120421C6500C153D2 /* PlacenoteSDK.framework */,
+				75B7E3832642C43A34F1DBF3 /* Pods_PlacenoteSDK_Planes.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AFC08D2820421AEC00C153D2 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				7AD7ABD26FC9D36EAA0373749D2A5428 /* Placenote.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		AFE195BD200ECAEA00924318 = {
+			isa = PBXGroup;
+			children = (
+				AF3084D22045BFEE0091F9F7 /* PlacenoteSDK.framework */,
+				AFE195C8200ECAEA00924318 /* PlacenoteSDK-Furniture */,
+				AFE195C7200ECAEA00924318 /* Products */,
+				B210D869136B683EA8694081 /* Pods */,
+				5DAF87F6EB72DD72C1C5E92D /* Frameworks */,
+				AFC08D2820421AEC00C153D2 /* Recovered References */,
+			);
+			sourceTree = "<group>";
+		};
+		AFE195C7200ECAEA00924318 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AFE195C6200ECAEA00924318 /* PlacenoteSDK-Furniture.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AFE195C8200ECAEA00924318 /* PlacenoteSDK-Furniture */ = {
+			isa = PBXGroup;
+			children = (
+				AF66AF272026215E001F716D /* ModelLoc.swift */,
+				AFE195C9200ECAEB00924318 /* AppDelegate.swift */,
+				AFE195CB200ECAEB00924318 /* ViewController.swift */,
+				AFC08D1D203B966C00C153D2 /* ReticleAR.swift */,
+				AFE195CD200ECAEB00924318 /* Main.storyboard */,
+				AFE195D0200ECAEB00924318 /* Assets.xcassets */,
+				AFE195D2200ECAEB00924318 /* LaunchScreen.storyboard */,
+				AFE195D5200ECAEB00924318 /* Info.plist */,
+				AF74DFB2202F7804007616ED /* art.scnassets */,
+			);
+			path = "PlacenoteSDK-Furniture";
+			sourceTree = "<group>";
+		};
+		B210D869136B683EA8694081 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				388FE97A4DB8707D2718DC26 /* Pods-PlacenoteSDK-Planes.debug.xcconfig */,
+				918EF89CC6AB5746D67112BB /* Pods-PlacenoteSDK-Planes.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AFE195C5200ECAEA00924318 /* PlacenoteSDK-Furniture */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AFE195D8200ECAEB00924318 /* Build configuration list for PBXNativeTarget "PlacenoteSDK-Furniture" */;
+			buildPhases = (
+				BCE2B7998DED6AF0183BB1F3 /* [CP] Check Pods Manifest.lock */,
+				AFE195C2200ECAEA00924318 /* Sources */,
+				AFE195C3200ECAEA00924318 /* Frameworks */,
+				AFE195C4200ECAEA00924318 /* Resources */,
+				4C5AEA38431A6F53454C5742 /* [CP] Embed Pods Frameworks */,
+				900CB8C17DBE059CA215F752 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "PlacenoteSDK-Furniture";
+			productName = "PlacenoteSDK-Planes";
+			productReference = AFE195C6200ECAEA00924318 /* PlacenoteSDK-Furniture.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AFE195BE200ECAEA00924318 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Vertical AI";
+				TargetAttributes = {
+					AFE195C5200ECAEA00924318 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = AFE195C1200ECAEA00924318 /* Build configuration list for PBXProject "PlacenoteSDK-Furniture" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AFE195BD200ECAEA00924318;
+			productRefGroup = AFE195C7200ECAEA00924318 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AFE195C5200ECAEA00924318 /* PlacenoteSDK-Furniture */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AFE195C4200ECAEA00924318 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF74DFB3202F7804007616ED /* art.scnassets in Resources */,
+				AFE195D4200ECAEB00924318 /* LaunchScreen.storyboard in Resources */,
+				AFE195D1200ECAEB00924318 /* Assets.xcassets in Resources */,
+				AFE195CF200ECAEB00924318 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4C5AEA38431A6F53454C5742 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PlacenoteSDK-Planes/Pods-PlacenoteSDK-Planes-frameworks.sh",
+				"${PODS_ROOT}/PlacenoteSDK/Placenote.framework",
+				"${BUILT_PRODUCTS_DIR}/PlacenoteSDK/PlacenoteSDK.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Placenote.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PlacenoteSDK.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PlacenoteSDK-Planes/Pods-PlacenoteSDK-Planes-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		900CB8C17DBE059CA215F752 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PlacenoteSDK-Planes/Pods-PlacenoteSDK-Planes-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BCE2B7998DED6AF0183BB1F3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PlacenoteSDK-Planes-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AFE195C2200ECAEA00924318 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFE195CC200ECAEB00924318 /* ViewController.swift in Sources */,
+				AFC08D1E203B966C00C153D2 /* ReticleAR.swift in Sources */,
+				AF66AF282026215E001F716D /* ModelLoc.swift in Sources */,
+				AFE195CA200ECAEB00924318 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		AFE195CD200ECAEB00924318 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AFE195CE200ECAEB00924318 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		AFE195D2200ECAEB00924318 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AFE195D3200ECAEB00924318 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AFE195D6200ECAEB00924318 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AFE195D7200ECAEB00924318 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AFE195D9200ECAEB00924318 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 388FE97A4DB8707D2718DC26 /* Pods-PlacenoteSDK-Planes.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 76PMXP42RV;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/PlacenoteSDK",
+					"$(PROJECT_DIR)",
+				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/PlacenoteSDK";
+				INFOPLIST_FILE = "$(SRCROOT)/PlacenoteSDK-Furniture/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "vertical.PlacenoteSDK-Furniture";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AFE195DA200ECAEB00924318 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 918EF89CC6AB5746D67112BB /* Pods-PlacenoteSDK-Planes.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 76PMXP42RV;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/PlacenoteSDK",
+					"$(PROJECT_DIR)",
+				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/PlacenoteSDK";
+				INFOPLIST_FILE = "$(SRCROOT)/PlacenoteSDK-Furniture/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "vertical.PlacenoteSDK-Furniture";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AFE195C1200ECAEA00924318 /* Build configuration list for PBXProject "PlacenoteSDK-Furniture" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFE195D6200ECAEB00924318 /* Debug */,
+				AFE195D7200ECAEB00924318 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AFE195D8200ECAEB00924318 /* Build configuration list for PBXNativeTarget "PlacenoteSDK-Furniture" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFE195D9200ECAEB00924318 /* Debug */,
+				AFE195DA200ECAEB00924318 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AFE195BE200ECAEA00924318 /* Project object */;
+}
