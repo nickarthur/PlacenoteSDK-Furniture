@@ -12,81 +12,54 @@ import os.log
 import PlacenoteSDK
 
 class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PNDelegate {
+    
+    // All IB outlets connects to Main.storyboard
+    @IBOutlet weak var sessionInfoView: UIView!     // view container for session status label
+    @IBOutlet weak var sessionInfoLabel: UILabel!   // label to show session status
+    @IBOutlet weak var sceneView: ARSCNView!        // main scene view
+    @IBOutlet weak var addItemsPanel: UIView!       // view with item picker buttons
+    
 
+    // The data structure to store our models and positions
+    private var modelTransforms: ModelLoc = ModelLoc() // Info stored using NSKeyedArchive
+    private var modelNames: [String] = ["WoodChair/CHAHIN_WOODEN_CHAIR.scn",
+                                        "Plant/PUSHILIN_plant.scn",
+                                        "BlueLamp/model-triangulated.scn",
+                                        "Gramophone/model-triangulated.scn"]
+    
+    // variables to hold models and saved mapID
+    private var loadedModelNodes: [SCNNode] = []
+    private var currMapID : String = "" //map id currently being used
   
-	// MARK: - IBOutlets
-  @IBOutlet weak var sessionInfoView: UIView!
-	@IBOutlet weak var sessionInfoLabel: UILabel!
-	@IBOutlet weak var sceneView: ARSCNView!
+    // to store mapID's in user defaults
+    private var defaults: UserDefaults = UserDefaults.standard
+    
+    // Session status flags
+    private var arkitActive: Bool = false
+    private var placenoteSessionRunning = false
   
-  private var modelTransforms: ModelLoc = ModelLoc() //array of transforms to be stored using NSKeyedArchive
-  private var modelsAdded: Int = 0 //number of models currently drawn to the scene (currently max:3)
-  private var modelsDrawn: Bool = false //all models drawn (modelsAdded == 3)
-  private var modelsLoaded: Bool = false //all models loaded into memory, but not necessarily drawn
-  private var modelNames: [String] = ["Chair/model.obj", "Guitar/WashburnGuitar.obj","Light/model.obj"]
-  private var loadedModelNodes: [SCNNode] = []
+    // Placenote specific variables
+    private var camManager: CameraManager? = nil       // to control the AR camera
+    private var ptViz: FeaturePointVisualizer? = nil  // to visualize Placenote features
+    private var renderedScene = false
   
-  private var currMapID : String = "" //map id currently being used
+    // class that displays the reticle (little red dot)
+    private var reticle: ReticleAR = ReticleAR()
   
-  private var localizing: Bool = false
-  private var mapping: Bool = false
-  private var arkitActive: Bool = false
-  
-  private var camManager: CameraManager? = nil
-  private var defaults: UserDefaults = UserDefaults.standard
-  
-  private var reticle: ReticleAR = ReticleAR()
-  @IBOutlet var saveLoadButton: UIButton!
-  
+    
   // MARK: - View Life Cycle
   /// - Tag: StartARSession
+    
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
   
-    guard ARWorldTrackingConfiguration.isSupported else {
-        fatalError("""
-            ARKit is not available on this device. For apps that require ARKit
-            for core functionality, use the `arkit` key in the key in the
-            `UIRequiredDeviceCapabilities` section of the Info.plist to prevent
-            the app from installing. (If the app can't be installed, this error
-            can't be triggered in a production scenario.)
-            In apps where AR is an additive feature, use `isSupported` to
-            determine whether to show UI for launching AR experiences.
-        """) // For details, see https://developer.apple.com/documentation/arkit
-    }
-    
+    // ARKit Session configuration
     let configuration = ARWorldTrackingConfiguration()
-
-    reticle = ReticleAR(arview: sceneView)
-
-    if (!loadMapAndModels()) {
-      os_log ("No map or models found")
-      saveLoadButton.setTitle("Add Model", for: .normal)
-      modelsAdded = 0
-      modelsDrawn = false
-      modelsLoaded = false
-      mapping = true
-      LibPlacenote.instance.startSession()
-      reticle.addPreviewModelToReticle(node: getModel(fileLoc: modelNames[modelsAdded]))
-    }
-    else {
-      os_log("Map and models loaded")
-      saveLoadButton.setTitle("Clear Models", for: .normal)
-      modelsLoaded = true
-      modelsDrawn  = false //it'll get drawn when we are localized
-      modelsAdded = 0
-      mapping = false //localization = true was set after map is loaded (see: Function loadMapAndModels)
-    }
-    
-    /*
-     Start the view's AR session with a configuration that uses the rear camera,
-     device position and orientation tracking, and plane detection.
-    */
     configuration.planeDetection = .horizontal
-    sceneView.session.run(configuration)
     sceneView.autoenablesDefaultLighting = true
+    sceneView.session.run(configuration)
 
-    // Set a delegate to track the number of plane anchors for providing UI feedback.
+    // sceneView delegate
     sceneView.session.delegate = self
   
     /*
@@ -98,21 +71,55 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     // Show debug UI to view performance metrics (e.g. frames per second).
     sceneView.showsStatistics = true
     
+    // setting up the Reticle
+    reticle = ReticleAR(arview: sceneView)
+    
+    
+    // Placenote configurations
     LibPlacenote.instance.multiDelegate += self
+    
+    //ptViz = FeaturePointVisualizer(inputScene: sceneView.scene);
+    //ptViz?.enableFeaturePoints()
     
     if let camera: SCNNode = sceneView?.pointOfView {
       camManager = CameraManager(scene: sceneView.scene, cam: camera)
     }
     
+    
+    if (!loadMapAndModels()) {
+        
+        os_log("Starting Fresh Design Session")
+        
+        sessionInfoLabel.text = "Starting Fresh Design Session"
+        sessionInfoView.isHidden = false
+        
+        while (!LibPlacenote.instance.initialized()) { //wait for it to initialize
+                usleep(100);
+        }
+        
+        placenoteSessionRunning = true;
+        LibPlacenote.instance.startSession()
+    }
+    else {
+        // the session will resume within the LoadMapAndModels function
+        os_log("Resuming Saved Design Session")
+        sessionInfoLabel.text = "Resuming Saved Design Session"
+        sessionInfoView.isHidden = false
+        
+        
+    }
+    
   }
 	
+    
+    // Pause session on disappear
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
-		
-		// Pause the view's AR session.
+
 		sceneView.session.pause()
 	}
 	
+    
 	// MARK: - ARSCNViewDelegate
   /// - Tag: PlaceARContent
   func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
@@ -134,7 +141,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
      Add the plane visualization to the ARKit-managed node so that it tracks
      changes in the plane anchor as plane estimation continues.
      */
-    node.addChildNode(planeNode)
+    //node.addChildNode(planeNode)
   }
 
   
@@ -156,7 +163,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
      corresponding node for one plane, then calls this method to update the size of
      the remaining plane.
     */
-    os_log ("updating anchors")
+    //os_log ("updating anchors")
     plane.width = CGFloat(planeAnchor.extent.x)
     plane.height = CGFloat(planeAnchor.extent.z)
     
@@ -165,71 +172,107 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
   
   //MARK - IBActions
   
+    @IBAction func addChair(_ sender: Any) {
+        
+        print("adding chair, index 0")
+        
+        let model = getModel(fileLoc: modelNames[0])
+        let matrix = reticle.addModelAtReticle(node: model)
+        
+        loadedModelNodes.append(model)
+        modelTransforms.add(transform: matrix_float4x4(matrix), type: UInt32(0))
+    }
+    
+    @IBAction func addPlant(_ sender: Any) {
+        
+        print("adding Plant, index 1")
+        
+        let model = getModel(fileLoc: modelNames[1])
+        let matrix = reticle.addModelAtReticle(node: model)
+        
+        loadedModelNodes.append(model)
+        modelTransforms.add(transform: matrix_float4x4(matrix), type: UInt32(1))
+    }
+    
+    @IBAction func addLamp(_ sender: Any) {
+        
+        print("adding Lamp, index 2")
+        
+        let model = getModel(fileLoc: modelNames[2])
+        let matrix = reticle.addModelAtReticle(node: model)
+        
+        loadedModelNodes.append(model)
+        modelTransforms.add(transform: matrix_float4x4(matrix), type: UInt32(2))
+    }
+    
+    @IBAction func addGramophone(_ sender: Any) {
+        
+        print("adding Gramophone, index 3")
+        
+        let model = getModel(fileLoc: modelNames[3])
+        let matrix = reticle.addModelAtReticle(node: model)
+        
+        loadedModelNodes.append(model)
+        modelTransforms.add(transform: matrix_float4x4(matrix), type: UInt32(3))
+    }
+    
+    
+    @IBAction func clearAll(_ sender: Any) {
+        
+        //  clear models from the scene
+        modelTransforms.removeAll()
+        clearModels()
+        
+        // Stop Placenote and delete the latest map
+        placenoteSessionRunning = false
+        LibPlacenote.instance.stopSession()
+        
+        LibPlacenote.instance.deleteMap(mapId: currMapID, deletedCb: {(deleted: Bool) -> Void in
+            if (deleted) {
+                print("Deleting: " + self.currMapID)
+                self.defaults.removeObject(forKey: "MapID")
+            }
+            else {
+                print ("Can't Delete: " + self.currMapID)
+            }
+        })
+        
+        //Start the mapping again
+        os_log("starting new session")
+        
+        placenoteSessionRunning = true
+        LibPlacenote.instance.startSession()
+        
+        // Set status on Label
+        sessionInfoLabel.text = "Designing..."
+        sessionInfoView.isHidden = false
+    }
+    
+    
   @IBAction func buttonClick(_ sender: Any) {
     
-    if(modelsLoaded) { //clear planes, clear out and delete map, start a new mapping session
-      //Clear everything
-      modelTransforms.removeAll()
-      clearModels()
-      modelsAdded = 0
-      modelsDrawn = false
-      modelsLoaded = false
-      os_log("cleared models")
-
-      //Allow models to be added again
-      saveLoadButton.setTitle("Add Model", for: .normal)
-      reticle.addPreviewModelToReticle(node: getModel(fileLoc: modelNames[modelsAdded]))
-      
-      //Stop the localized (or localizing) status, delete the map.
-      LibPlacenote.instance.stopSession()
-      LibPlacenote.instance.deleteMap(mapId: currMapID, deletedCb: {(deleted: Bool) -> Void in
-        if (deleted) {
-          print("Deleting: " + self.currMapID)
-          self.defaults.removeObject(forKey: "MapID")
-        }
-        else {
-          print ("Can't Delete: " + self.currMapID)
-        }
-      })
-      localizing = false
-      
-      //Start mapping again
-      os_log("starting new session")
-      mapping = true
-      LibPlacenote.instance.startSession()
-    }
-    else if (modelsAdded < 3) {
-      //Add the current model, remove it from preview
-      print("adding " + String(describing: modelsAdded) + "th Model")
-      reticle.removePreviewModel()
-      let model = getModel(fileLoc: modelNames[modelsAdded])
-      let matrix = reticle.addModelAtReticle(node: model)
-      loadedModelNodes.append(model)
-      modelTransforms.add(transform: matrix_float4x4(matrix))
-      modelsAdded = modelsAdded + 1
-      
-      if (modelsAdded >= 3) { //max number of models added, saveMap and Models
-        saveLoadButton.setTitle("Clear Map", for: .normal)
-        modelsDrawn = true
-        saveMapAndModels()
-      }
-      else { //preview the next model
-        reticle.addPreviewModelToReticle(node: getModel(fileLoc: modelNames[modelsAdded]))
-      }
-    }
+    // save the session
+    saveMapAndModels()
     
   }
   
   func saveMapAndModels() {
+    
+    // Save the models
     os_log("saving models")
     saveModels()
+    
+    // Save and upload the Placenote map
     
     LibPlacenote.instance.saveMap(
       savedCb: {(mapId: String?) -> Void in
         if (mapId != nil) {
           self.defaults.set(mapId, forKey: "MapID")
-          self.mapping = false //we done mapping
+
+          self.placenoteSessionRunning = false
           LibPlacenote.instance.stopSession()
+            
+            
           let configuration = ARWorldTrackingConfiguration()
           configuration.planeDetection = []
           self.sceneView.session.run(configuration)
@@ -238,18 +281,31 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         }
     },
       uploadProgressCb: {(completed: Bool, faulted: Bool, percentage: Float) -> Void in
-        //nothing to do here, because we dont care if the map is uploaded or not
+        
+        // sessionInfo view set here:
+        self.sessionInfoLabel.text = "Saving..."
+        self.sessionInfoView.isHidden = false
+        
+        if (completed) {
+            self.sessionInfoLabel.text = "Saved!"
+        }
+        
     })
   }
   
   private  func loadMapAndModels () -> Bool {
+    
     guard let savedID = defaults.string(forKey: "MapID") else { return false }
     os_log ("Map Exists")
+    
     currMapID = savedID
+    
     modelTransforms = loadModels()!
+    
     guard modelTransforms.count() > 0 else {return false}
+    
     os_log ("saved models are loaded")
-    print("first one: " + String(describing: modelTransforms.transforms.first))
+    print("first one: " + String(describing: modelTransforms.types.first))
     
     DispatchQueue.global(qos: .background).async (execute: {() -> Void in //
       while (!LibPlacenote.instance.initialized()) { //wait for it to initialize
@@ -259,7 +315,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         print("percentage:" + String(describing: percentage))
         if (completed) {
           os_log("Map load completed..localizing")
-          self.localizing = true
+            
+          self.placenoteSessionRunning = true;
           LibPlacenote.instance.startSession()
         }
       })
@@ -295,17 +352,30 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
   private func renderModels() {
     
     print ("adding models")
-    for transform in modelTransforms.transforms {
-      
-      print ("adding model")
-      let model = getModel(fileLoc: modelNames[modelsAdded])
-      model.transform = SCNMatrix4(transform)
-      sceneView.scene.rootNode.addChildNode(model)
-      loadedModelNodes.append(model)
-      modelsAdded = modelsAdded + 1
+    print (modelTransforms.count())
+    
+    
+    for index in 0..<modelTransforms.count() {
+        let modelType = modelTransforms.types[index]
+        let model = getModel(fileLoc: modelNames[Int(modelType)])
+        
+        model.transform = SCNMatrix4(modelTransforms.transforms[index])
+        sceneView.scene.rootNode.addChildNode(model)
+        loadedModelNodes.append(model)
     }
     
-    modelsDrawn = true
+//
+//    for transform in modelTransforms.transforms {
+//
+//      print ("adding model")
+//      let model = getModel(fileLoc: modelNames[0])
+//      model.transform = SCNMatrix4(transform)
+//      sceneView.scene.rootNode.addChildNode(model)
+//      loadedModelNodes.append(model)
+//      modelsAdded = modelsAdded + 1
+//    }
+    
+
   }
   
   func getModel (fileLoc: String) -> SCNNode {
@@ -314,7 +384,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     for child in (fileNodes?.rootNode.childNodes)! {
       node.addChildNode(child)
     }
-    print ("created model from" + fileLoc)
+    print ("created model from " + fileLoc)
     return node
   }
   
@@ -344,7 +414,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
   
   
   func session(_ session: ARSession, didUpdate frame: ARFrame) {
-    if (arkitActive && (mapping || localizing)) {
+    if (arkitActive && placenoteSessionRunning) {
       //os_log ("sending arframes!")
       let image: CVPixelBuffer = frame.capturedImage
       let pose: matrix_float4x4 = frame.camera.transform
@@ -380,7 +450,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     switch trackingState {
       case .normal where frame.anchors.isEmpty:
           // No planes detected; provide instructions for this app's AR interactions.
-          message = "Move the device around to detect horizontal surfaces."
+          //message = "Move the device around to detect horizontal surfaces."
           arkitActive = true
       case .normal:
           // No feedback needed when tracking is normal and planes are visible.
@@ -414,10 +484,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
   }
   
   func onStatusChange(_ prevStatus: LibPlacenote.MappingStatus, _ currStatus: LibPlacenote.MappingStatus) {
-    if prevStatus != LibPlacenote.MappingStatus.running && currStatus == LibPlacenote.MappingStatus.running && !modelsDrawn {
-      os_log("Found Old Map! Rendering Planes")
-      clearModels() //clear some of the models if they are already drawn
-      renderModels()
+    if prevStatus == LibPlacenote.MappingStatus.lost && currStatus == LibPlacenote.MappingStatus.running {
+        if (renderedScene) {
+            return
+        }
+        renderModels()
+        renderedScene = true
     }
   }
   

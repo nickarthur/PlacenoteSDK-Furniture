@@ -30,7 +30,7 @@ class ReticleAR {
   }
   
   init(arview: ARSCNView) { //default initializer and default red reticle
-    let reticleGeo: SCNGeometry = SCNCylinder(radius: 0.1, height: 0.005)
+    let reticleGeo: SCNGeometry = SCNCylinder(radius: 0.06, height: 0.005)
     reticleGeo.materials.first?.diffuse.contents = UIColor.red
     reticleNode = SCNNode(geometry: reticleGeo)
     reticleNode.opacity = 0.4
@@ -43,6 +43,7 @@ class ReticleAR {
     sceneView = arview
   }
   
+    /*
   func addPreviewModelToReticle (node: SCNNode)  { //attach model to reticle
     reticlePreviewNode = node
     reticleNode.addChildNode(reticlePreviewNode)
@@ -51,7 +52,8 @@ class ReticleAR {
   func removePreviewModel() {
     reticlePreviewNode.removeFromParentNode()
   }
-  
+ */
+ 
   //add model to plane/mesh where reticle currently is, return the reticles global position
   func addModelAtReticle (node: SCNNode) -> SCNMatrix4 {
     node.transform = SCNMatrix4Mult(reticleHitTf, node.transform)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		001ED1002D7DE122EE9976E2 /* Pods_PlacenoteSDK_Furniture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1D0E2D21A3B628628A154D9 /* Pods_PlacenoteSDK_Furniture.framework */; };
 		0283677A7F7A4A3132598192 /* Pods_PlacenoteSDK_Planes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B7E3832642C43A34F1DBF3 /* Pods_PlacenoteSDK_Planes.framework */; };
 		AF66AF282026215E001F716D /* ModelLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF66AF272026215E001F716D /* ModelLoc.swift */; };
 		AF74DFB3202F7804007616ED /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = AF74DFB2202F7804007616ED /* art.scnassets */; };
@@ -22,7 +23,9 @@
 		388FE97A4DB8707D2718DC26 /* Pods-PlacenoteSDK-Planes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlacenoteSDK-Planes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PlacenoteSDK-Planes/Pods-PlacenoteSDK-Planes.debug.xcconfig"; sourceTree = "<group>"; };
 		75B7E3832642C43A34F1DBF3 /* Pods_PlacenoteSDK_Planes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlacenoteSDK_Planes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AD7ABD26FC9D36EAA0373749D2A5428 /* Placenote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Placenote.framework; sourceTree = "<group>"; };
+		8A98FBAE0AC9CBF1B066EB21 /* Pods-PlacenoteSDK-Furniture.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlacenoteSDK-Furniture.release.xcconfig"; path = "Pods/Target Support Files/Pods-PlacenoteSDK-Furniture/Pods-PlacenoteSDK-Furniture.release.xcconfig"; sourceTree = "<group>"; };
 		918EF89CC6AB5746D67112BB /* Pods-PlacenoteSDK-Planes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlacenoteSDK-Planes.release.xcconfig"; path = "Pods/Target Support Files/Pods-PlacenoteSDK-Planes/Pods-PlacenoteSDK-Planes.release.xcconfig"; sourceTree = "<group>"; };
+		927900D1BF15B2AA0D0AB46D /* Pods-PlacenoteSDK-Furniture.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlacenoteSDK-Furniture.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PlacenoteSDK-Furniture/Pods-PlacenoteSDK-Furniture.debug.xcconfig"; sourceTree = "<group>"; };
 		AF3084D22045BFEE0091F9F7 /* PlacenoteSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlacenoteSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF66AF272026215E001F716D /* ModelLoc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelLoc.swift; sourceTree = "<group>"; };
 		AF74DFB2202F7804007616ED /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -36,6 +39,7 @@
 		AFE195D0200ECAEB00924318 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AFE195D3200ECAEB00924318 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AFE195D5200ECAEB00924318 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C1D0E2D21A3B628628A154D9 /* Pods_PlacenoteSDK_Furniture.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlacenoteSDK_Furniture.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +48,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0283677A7F7A4A3132598192 /* Pods_PlacenoteSDK_Planes.framework in Frameworks */,
+				001ED1002D7DE122EE9976E2 /* Pods_PlacenoteSDK_Furniture.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +61,7 @@
 				AFC08D3720421C8700C153D2 /* PlacenoteSDK.framework */,
 				AFC08D3120421C6500C153D2 /* PlacenoteSDK.framework */,
 				75B7E3832642C43A34F1DBF3 /* Pods_PlacenoteSDK_Planes.framework */,
+				C1D0E2D21A3B628628A154D9 /* Pods_PlacenoteSDK_Furniture.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -109,6 +115,8 @@
 			children = (
 				388FE97A4DB8707D2718DC26 /* Pods-PlacenoteSDK-Planes.debug.xcconfig */,
 				918EF89CC6AB5746D67112BB /* Pods-PlacenoteSDK-Planes.release.xcconfig */,
+				927900D1BF15B2AA0D0AB46D /* Pods-PlacenoteSDK-Furniture.debug.xcconfig */,
+				8A98FBAE0AC9CBF1B066EB21 /* Pods-PlacenoteSDK-Furniture.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -191,7 +199,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PlacenoteSDK-Planes/Pods-PlacenoteSDK-Planes-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-PlacenoteSDK-Furniture/Pods-PlacenoteSDK-Furniture-frameworks.sh",
 				"${PODS_ROOT}/PlacenoteSDK/Placenote.framework",
 				"${BUILT_PRODUCTS_DIR}/PlacenoteSDK/PlacenoteSDK.framework",
 			);
@@ -202,7 +210,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PlacenoteSDK-Planes/Pods-PlacenoteSDK-Planes-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PlacenoteSDK-Furniture/Pods-PlacenoteSDK-Furniture-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		900CB8C17DBE059CA215F752 /* [CP] Copy Pods Resources */ = {
@@ -217,7 +225,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PlacenoteSDK-Planes/Pods-PlacenoteSDK-Planes-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PlacenoteSDK-Furniture/Pods-PlacenoteSDK-Furniture-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BCE2B7998DED6AF0183BB1F3 /* [CP] Check Pods Manifest.lock */ = {
@@ -231,7 +239,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PlacenoteSDK-Planes-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PlacenoteSDK-Furniture-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -383,7 +391,7 @@
 		};
 		AFE195D9200ECAEB00924318 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 388FE97A4DB8707D2718DC26 /* Pods-PlacenoteSDK-Planes.debug.xcconfig */;
+			baseConfigurationReference = 927900D1BF15B2AA0D0AB46D /* Pods-PlacenoteSDK-Furniture.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -407,7 +415,7 @@
 		};
 		AFE195DA200ECAEB00924318 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 918EF89CC6AB5746D67112BB /* Pods-PlacenoteSDK-Planes.release.xcconfig */;
+			baseConfigurationReference = 8A98FBAE0AC9CBF1B066EB21 /* Pods-PlacenoteSDK-Furniture.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
