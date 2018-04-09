@@ -37,6 +37,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     // Session status flags
     private var arkitActive: Bool = false
     private var placenoteSessionRunning = false
+    private var localizedSession = false;
   
     // Placenote specific variables
     private var camManager: CameraManager? = nil       // to control the AR camera
@@ -57,7 +58,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     let configuration = ARWorldTrackingConfiguration()
     configuration.planeDetection = .horizontal
     sceneView.autoenablesDefaultLighting = true
+    //self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
     sceneView.session.run(configuration)
+    
 
     // sceneView delegate
     sceneView.session.delegate = self
@@ -78,8 +81,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     // Placenote configurations
     LibPlacenote.instance.multiDelegate += self
     
-    //ptViz = FeaturePointVisualizer(inputScene: sceneView.scene);
-    //ptViz?.enableFeaturePoints()
+    ptViz = FeaturePointVisualizer(inputScene: sceneView.scene);
+    ptViz?.enableFeaturePoints()
     
     if let camera: SCNNode = sceneView?.pointOfView {
       camManager = CameraManager(scene: sceneView.scene, cam: camera)
@@ -92,8 +95,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         
         sessionInfoLabel.text = "Starting Fresh Design Session"
         sessionInfoView.isHidden = false
+        sessionInfoView.backgroundColor = UIColor.white;
         
         while (!LibPlacenote.instance.initialized()) { //wait for it to initialize
+            print("Waiting to initialize")
                 usleep(100);
         }
         
@@ -102,9 +107,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     }
     else {
         // the session will resume within the LoadMapAndModels function
-        os_log("Resuming Saved Design Session")
-        sessionInfoLabel.text = "Resuming Saved Design Session"
-        sessionInfoView.isHidden = false
+        os_log("Resuming Saved Session")
+        //sessionInfoLabel.text = "Resuming Saved Design Session"
+        //sessionInfoView.isHidden = false
         
         
     }
@@ -219,6 +224,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     
     @IBAction func clearAll(_ sender: Any) {
         
+        
         //  clear models from the scene
         modelTransforms.removeAll()
         clearModels()
@@ -236,16 +242,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
                 print ("Can't Delete: " + self.currMapID)
             }
         })
+ 
+        
         
         //Start the mapping again
         os_log("starting new session")
         
         placenoteSessionRunning = true
+        localizedSession = false;
         LibPlacenote.instance.startSession()
         
         // Set status on Label
         sessionInfoLabel.text = "Designing..."
         sessionInfoView.isHidden = false
+        sessionInfoView.backgroundColor = UIColor.white;
     }
     
     
@@ -285,17 +295,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         // sessionInfo view set here:
         self.sessionInfoLabel.text = "Saving..."
         self.sessionInfoView.isHidden = false
+        self.sessionInfoView.backgroundColor = UIColor.yellow;
         
-        if (completed) {
-            self.sessionInfoLabel.text = "Saved!"
-        }
+        if (completed) {self.sessionInfoLabel.text = "Saved!"}
         
     })
   }
   
   private  func loadMapAndModels () -> Bool {
     
-    guard let savedID = defaults.string(forKey: "MapID") else { return false }
+    guard let savedID = defaults.string(forKey: "MapID")
+        else { return false }
     os_log ("Map Exists")
     
     currMapID = savedID
@@ -318,6 +328,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
             
           self.placenoteSessionRunning = true;
           LibPlacenote.instance.startSession()
+            
+          self.sessionInfoLabel.text = "Resuming Saved Session"
+          self.sessionInfoView.isHidden = false
+          self.sessionInfoView.tintColor = UIColor.yellow;
         }
       })
     })
@@ -414,7 +428,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
   
   
   func session(_ session: ARSession, didUpdate frame: ARFrame) {
-    if (arkitActive && placenoteSessionRunning) {
+
+    if (arkitActive && placenoteSessionRunning && !localizedSession) {
       //os_log ("sending arframes!")
       let image: CVPixelBuffer = frame.capturedImage
       let pose: matrix_float4x4 = frame.camera.transform
@@ -467,10 +482,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
       
       case .limited(.initializing):
           message = "Initializing AR session."
+    case .limited(.relocalizing):
+        message = "Relocalizing AR session."
     }
+    
 
     sessionInfoLabel.text = message
     sessionInfoView.isHidden = message.isEmpty
+    sessionInfoView.backgroundColor = UIColor.white;
   }
 
   private func resetTracking() {
@@ -484,12 +503,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
   }
   
   func onStatusChange(_ prevStatus: LibPlacenote.MappingStatus, _ currStatus: LibPlacenote.MappingStatus) {
+    
     if prevStatus == LibPlacenote.MappingStatus.lost && currStatus == LibPlacenote.MappingStatus.running {
+        
         if (renderedScene) {
             return
         }
         renderModels()
         renderedScene = true
+        
+        localizedSession = true;
+        sessionInfoLabel.text = "Found Saved Design"
+        sessionInfoView.isHidden = false
+        sessionInfoView.backgroundColor = UIColor.green;
+        
     }
   }
   

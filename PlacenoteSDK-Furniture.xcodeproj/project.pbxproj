@@ -404,6 +404,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/PlacenoteSDK";
 				INFOPLIST_FILE = "$(SRCROOT)/PlacenoteSDK-Furniture/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "vertical.PlacenoteSDK-Furniture";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -428,6 +429,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/PlacenoteSDK";
 				INFOPLIST_FILE = "$(SRCROOT)/PlacenoteSDK-Furniture/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "vertical.PlacenoteSDK-Furniture";
 				PRODUCT_NAME = "$(TARGET_NAME)";
