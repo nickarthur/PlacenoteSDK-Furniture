@@ -47,6 +47,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     // class that displays the reticle (little red dot)
     private var reticle: ReticleAR = ReticleAR()
   
+    private var originalSource: Any? = nil
     
   // MARK: - View Life Cycle
   /// - Tag: StartARSession
@@ -56,7 +57,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
   
     // ARKit Session configuration
     let configuration = ARWorldTrackingConfiguration()
-    configuration.planeDetection = .horizontal
+    configuration.planeDetection = [.horizontal, .vertical]
     sceneView.autoenablesDefaultLighting = true
     //self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
     sceneView.session.run(configuration)
@@ -127,6 +128,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     
 	// MARK: - ARSCNViewDelegate
   /// - Tag: PlaceARContent
+    
+    
   func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
     
     guard let planeAnchor = anchor as? ARPlaneAnchor else { //is it a plane?
@@ -135,6 +138,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     
     // Create a SceneKit plane to visualize the plane anchor using its position and extent.
     let plane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
+    
     let planeNode = SCNNode(geometry: plane)
     planeNode.simdPosition = float3(planeAnchor.center.x, 0, planeAnchor.center.z)
     planeNode.eulerAngles.x = -.pi / 2
@@ -147,7 +151,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
      changes in the plane anchor as plane estimation continues.
      */
     //node.addChildNode(planeNode)
+    
   }
+    
+ 
 
   
   /// - Tag: UpdateARContent
@@ -161,19 +168,44 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     reticle.updatePlaneNode(planeNode: node, anchor: anchor)
     // Plane estimation may shift the center of a plane relative to its anchor's transform.
     planeNode.simdPosition = float3(planeAnchor.center.x, 0, planeAnchor.center.z)
-  
-    /*
-     Plane estimation may extend the size of the plane, or combine previously detected
-     planes into a larger one. In the latter case, `ARSCNView` automatically deletes the
-     corresponding node for one plane, then calls this method to update the size of
-     the remaining plane.
-    */
-    //os_log ("updating anchors")
+
     plane.width = CGFloat(planeAnchor.extent.x)
     plane.height = CGFloat(planeAnchor.extent.z)
     
   }
-  
+ 
+ 
+    
+/*
+     // Activate this to use polygonal planes from iOS 11.3
+     
+  func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+        let anchorNode = SCNNode()
+        anchorNode.name = "anchor"
+        sceneView.scene.rootNode.addChildNode(anchorNode)
+        return anchorNode
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        
+        guard let planeAnchor = anchor as?  ARPlaneAnchor else { return }
+        
+        let planeGeometry = planeAnchor.geometry
+        
+        guard let device = MTLCreateSystemDefaultDevice() else {return}
+        
+        let plane = ARSCNPlaneGeometry(device: device)
+        
+        plane?.update(from: planeGeometry)
+        
+        node.geometry = plane
+        node.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+        node.geometry?.firstMaterial?.transparency = 0.20
+    }
+*/
+    
+    
+    
   
   //MARK - IBActions
   
@@ -211,7 +243,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     }
     
     @IBAction func addGramophone(_ sender: Any) {
-        
+        /*
         print("adding Gramophone, index 3")
         
         let model = getModel(fileLoc: modelNames[3])
@@ -219,6 +251,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         
         loadedModelNodes.append(model)
         modelTransforms.add(transform: matrix_float4x4(matrix), type: UInt32(3))
+        */
+        
+        // turn off the ARScnView background
+        
+        if originalSource == nil {
+            
+            originalSource = sceneView.scene.background.contents
+            
+            sceneView.scene.background.contents = UIColor.black
+            
+        } else {
+            
+            sceneView.scene.background.contents = originalSource
+            
+            originalSource = nil
+        }
+        
+        
+        
     }
     
     
@@ -282,6 +333,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
           self.placenoteSessionRunning = false
           LibPlacenote.instance.stopSession()
             
+          self.sessionInfoLabel.text = "Saving..."
+          self.sessionInfoView.isHidden = false
+          self.sessionInfoView.backgroundColor = UIColor.yellow;
             
           let configuration = ARWorldTrackingConfiguration()
           configuration.planeDetection = []
@@ -297,7 +351,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         self.sessionInfoView.isHidden = false
         self.sessionInfoView.backgroundColor = UIColor.yellow;
         
-        if (completed) {self.sessionInfoLabel.text = "Saved!"}
+        if (completed) {
+            self.sessionInfoLabel.text = "Saved!"
+            self.sessionInfoView.backgroundColor = UIColor.green;
+        }
         
     })
   }
@@ -329,7 +386,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
           self.placenoteSessionRunning = true;
           LibPlacenote.instance.startSession()
             
-          self.sessionInfoLabel.text = "Resuming Saved Session"
+          self.sessionInfoLabel.text = "Resuming Shared Session"
           self.sessionInfoView.isHidden = false
           self.sessionInfoView.tintColor = UIColor.yellow;
         }
@@ -408,7 +465,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     }
     loadedModelNodes.removeAll()
   }
-  
   
 
   // MARK: - ARSessionDelegate
@@ -494,7 +550,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
 
   private func resetTracking() {
     let configuration = ARWorldTrackingConfiguration()
-    configuration.planeDetection = .horizontal
+
+    configuration.planeDetection = [.horizontal, .vertical]
+
     sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
   }
   
@@ -513,7 +571,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
         renderedScene = true
         
         localizedSession = true;
-        sessionInfoLabel.text = "Found Saved Design"
+        sessionInfoLabel.text = "Resuming Saved Design"
         sessionInfoView.isHidden = false
         sessionInfoView.backgroundColor = UIColor.green;
         

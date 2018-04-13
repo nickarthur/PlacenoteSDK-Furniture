@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		001ED1002D7DE122EE9976E2 /* Pods_PlacenoteSDK_Furniture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1D0E2D21A3B628628A154D9 /* Pods_PlacenoteSDK_Furniture.framework */; };
-		0283677A7F7A4A3132598192 /* Pods_PlacenoteSDK_Planes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B7E3832642C43A34F1DBF3 /* Pods_PlacenoteSDK_Planes.framework */; };
 		AF66AF282026215E001F716D /* ModelLoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF66AF272026215E001F716D /* ModelLoc.swift */; };
 		AF74DFB3202F7804007616ED /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = AF74DFB2202F7804007616ED /* art.scnassets */; };
 		AFC08D1E203B966C00C153D2 /* ReticleAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC08D1D203B966C00C153D2 /* ReticleAR.swift */; };
@@ -47,7 +46,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0283677A7F7A4A3132598192 /* Pods_PlacenoteSDK_Planes.framework in Frameworks */,
 				001ED1002D7DE122EE9976E2 /* Pods_PlacenoteSDK_Furniture.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

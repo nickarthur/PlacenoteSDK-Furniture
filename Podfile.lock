@@ -1,12 +1,12 @@
 PODS:
-  - PlacenoteSDK (1.4.2)
+  - PlacenoteSDK (1.4.3)
 
 DEPENDENCIES:
   - PlacenoteSDK
 
 SPEC CHECKSUMS:
-  PlacenoteSDK: e4c187cffb4491e1eac40d6c0d9d3a2f1ef31687
+  PlacenoteSDK: 8ffb009efa3ea46b5d216c40ad35d020ab5deb7d
 
-PODFILE CHECKSUM: 8d492441cc1d04ca8dbc471f983cfb957cf8051e
+PODFILE CHECKSUM: bb5552aaafef086e27e16d4563ec04d9c5ed9952
 
 COCOAPODS: 1.4.0
