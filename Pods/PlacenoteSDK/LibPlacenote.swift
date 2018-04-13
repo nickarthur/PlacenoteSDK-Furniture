@@ -103,7 +103,7 @@ public class LibPlacenote {
   public typealias SaveMapCallback = (_ mapId: String?) -> Void
   public typealias FileTransferCallback = (_ completed: Bool, _ faulted: Bool, _ percentage: Float) -> Void
   public typealias DeleteMapCallback = (_ deleted: Bool) -> Void
-  public typealias ListMapCallback = (_ success: Bool, _ mapList: [String]) -> Void
+  public typealias ListMapCallback = (_ success: Bool, _ mapList: [String: Any]) -> Void
   
   /// Enums that indicates the status of the LibPlacenote mapping module
   public enum MappingStatus {
@@ -147,7 +147,7 @@ public class LibPlacenote {
   private var sdkInitialized: Bool = false
   private let mapStoragePath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
   
-  private var mapList: [String] = []
+  private var mapList: [String: Any] = [:]
   private var mapTransferCbDict: Dictionary<Int, FileTransferCallback> = Dictionary()
   private var saveMapCbDict: Dictionary<Int, SaveMapCallback> = Dictionary()
   private var deleteMapCbDict: Dictionary<Int, DeleteMapCallback> = Dictionary()
@@ -392,17 +392,62 @@ public class LibPlacenote {
     setFrameNative(image, pose.position(), pose.rotation());
   }
   
-  
   /**
    Function to stop a running mapping session, and upload it to the LibPlacenote Map Cloud
    upon saving succesfully. Note that this will reset the generated map,
    therefore saveMap should be called before you call this function
    */
-  public func stopSession() -> Void {
-    PNStopSession();
+  public func stopSession() {
+    PNStopSession()
     multiDelegate.onStatusChange(prevStatus: prevStatus, currStatus: MappingStatus.waiting)
     prevStatus = MappingStatus.waiting
   }
+  
+  
+  /**
+    Same as stopSession above but with the ability to report file transfer status of Dataset
+  public func stopSession(uploadProgressCb: @escaping FileTransferCallback) -> Void {
+    let cbCtx: CallbackContext = CallbackContext(id: UUID().uuidString, ptr: self)
+    
+    mapTransferCbDict[cbCtx.callbackId] = uploadProgressCb
+    ctxDict[cbCtx.callbackId] = cbCtx
+    
+    let anUnmanaged = Unmanaged<CallbackContext>.passUnretained(ctxDict[cbCtx.callbackId]!)
+    let ctxPtr = UnsafeMutableRawPointer(anUnmanaged.toOpaque())
+        
+    PNStopSession({(status: UnsafeMutablePointer<PNTransferStatus>?, swiftContext: UnsafeMutableRawPointer?) -> Void in
+      let cbRetCtx = Unmanaged<CallbackContext>.fromOpaque(swiftContext!).takeUnretainedValue()
+      let libPtr = cbRetCtx.libPtr
+      let callbackId = cbRetCtx.callbackId
+      let completed = status?.pointee.completed
+      let faulted = status?.pointee.faulted
+      let bytesTransferred = status?.pointee.bytesTransferred
+      let bytesTotal = status?.pointee.bytesTotal
+      
+      DispatchQueue.main.async(execute: {() -> Void in
+        if (completed!) {
+          os_log("Data loaded!")
+          libPtr.mapTransferCbDict[callbackId]!(true, false, 1)
+          libPtr.mapTransferCbDict.removeValue(forKey: callbackId)
+          libPtr.ctxDict.removeValue(forKey: callbackId)
+        } else if (faulted!) {
+          os_log("Failed to load data!", log: OSLog.default, type: .fault)
+          libPtr.mapTransferCbDict[callbackId]!(false, true, 0)
+          libPtr.mapTransferCbDict.removeValue(forKey: callbackId)
+          libPtr.ctxDict.removeValue(forKey: callbackId)
+        } else {
+          var progress:Float = 0
+          if (bytesTotal! > 0) {
+            progress = Float(bytesTransferred!)/Float(bytesTotal!)
+          }
+          libPtr.mapTransferCbDict[callbackId]!(false, false, progress)
+        }
+      })
+    }, ctxPtr)
+    
+    multiDelegate.onStatusChange(prevStatus: prevStatus, currStatus: MappingStatus.waiting)
+    prevStatus = MappingStatus.waiting
+  }*/
   
   /**
    Save the map that LibPlacenote is generating in its current mapping session
@@ -564,7 +609,7 @@ public class LibPlacenote {
    Fetch of list of map IDs that is associated with the given API Key
    
    - Parameter listCb: async callback that returns the map list for a API Key
-   */
+ */
   public func fetchMapList(listCb: @escaping ListMapCallback) {
     let cbCtx: CallbackContext = CallbackContext(id: UUID().uuidString, ptr: self)
     
@@ -584,32 +629,32 @@ public class LibPlacenote {
         os_log("Map list fetched from the database! Response: %@", newMapList!)
       
         var placeArray: [String: NSArray]
-        var placeIdArray:[String] = []
+        var placeIdMap:[String: Any] = [:]
         if let data = newMapList?.data(using: .utf8) {
           do {
             placeArray = (try JSONSerialization.jsonObject(with: data, options: []) as? [String: NSArray])!
-            let placeIds = placeArray["places"]!
-            if (placeIds.count > 0) {
-              for i in 0...(placeIds.count-1) {
-                let placeid = placeIds[i] as! [String:String]
-                placeIdArray.append(placeid["placeId"]!)
+            let places = placeArray["places"]!
+            if (places.count > 0) {
+              for i in 0...(places.count-1) {
+                let place = places[i] as! [String : Any]
+                placeIdMap[place["placeId"] as! String] = place["userData"] as Any
               }
             }
           } catch {
             os_log("Canot parse file list: %@", log: OSLog.default, type: .error, error.localizedDescription)
           }
         }
-        
+
         DispatchQueue.main.async(execute: {() -> Void in
-          libPtr.mapList = placeIdArray
-          libPtr.listMapCbDict[callbackId]!(true, placeIdArray)
+          libPtr.mapList = placeIdMap
+          libPtr.listMapCbDict[callbackId]!(true, placeIdMap)
         })
       } else {
         let errorMsg: String? = String(cString: (result?.pointee.msg)!, encoding: String.Encoding.ascii)
         os_log("Failed to fetch the map list! Error msg: %@", log: OSLog.default, type: .error, errorMsg!)
         
         DispatchQueue.main.async(execute: {() -> Void in
-          libPtr.listMapCbDict[callbackId]!(false, [])
+          libPtr.listMapCbDict[callbackId]!(false, [:])
         })
       }
       
@@ -619,6 +664,62 @@ public class LibPlacenote {
       })
     }, ctxPtr)
   }
+
+  /**
+   Set the metadata for the given map, which will be returned as the value of the
+   dictionary of ListMapCallback. The metadata must be a valid JSON value, object,
+   or array a serialized string.
+
+   - Parameter mapId: ID of the map
+   - Parameter metadataJson: Serialized JSON metadata
+   - Returns: False if the SDK was not initialized, or metadataJson was invalid.
+     True otherwise.
+   */
+  public func setMapMetadata(mapId: String, metadataJson: String) -> Bool {
+    return PNSetMetadata(mapId, metadataJson) == 0
+  }
   
+  /** Start recording a dataset to be reported to the Placenote team. Recording is automatically stopped when stopSession() is called.
+   
+   */
+  public func startReportRecord(uploadProgressCb: @escaping FileTransferCallback) -> Void {
+    let cbCtx: CallbackContext = CallbackContext(id: UUID().uuidString, ptr: self)
+    
+    mapTransferCbDict[cbCtx.callbackId] = uploadProgressCb
+    ctxDict[cbCtx.callbackId] = cbCtx
+    
+    let anUnmanaged = Unmanaged<CallbackContext>.passUnretained(ctxDict[cbCtx.callbackId]!)
+    let ctxPtr = UnsafeMutableRawPointer(anUnmanaged.toOpaque())
+    
+    PNStartRecordDataset({(status: UnsafeMutablePointer<PNTransferStatus>?, swiftContext: UnsafeMutableRawPointer?) -> Void in
+      let cbRetCtx = Unmanaged<CallbackContext>.fromOpaque(swiftContext!).takeUnretainedValue()
+      let libPtr = cbRetCtx.libPtr
+      let callbackId = cbRetCtx.callbackId
+      let completed = status?.pointee.completed
+      let faulted = status?.pointee.faulted
+      let bytesTransferred = status?.pointee.bytesTransferred
+      let bytesTotal = status?.pointee.bytesTotal
+      
+      DispatchQueue.main.async(execute: {() -> Void in
+        if (completed!) {
+          os_log("Data loaded!")
+          libPtr.mapTransferCbDict[callbackId]!(true, false, 1)
+          libPtr.mapTransferCbDict.removeValue(forKey: callbackId)
+          libPtr.ctxDict.removeValue(forKey: callbackId)
+        } else if (faulted!) {
+          os_log("Failed to load data!", log: OSLog.default, type: .fault)
+          libPtr.mapTransferCbDict[callbackId]!(false, true, 0)
+          libPtr.mapTransferCbDict.removeValue(forKey: callbackId)
+          libPtr.ctxDict.removeValue(forKey: callbackId)
+        } else {
+          var progress:Float = 0
+          if (bytesTotal! > 0) {
+            progress = Float(bytesTransferred!)/Float(bytesTotal!)
+          }
+          libPtr.mapTransferCbDict[callbackId]!(false, false, progress)
+        }
+      })
+    }, ctxPtr)
+  }
   
 }
