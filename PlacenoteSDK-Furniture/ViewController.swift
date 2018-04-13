@@ -243,32 +243,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, PN
     }
     
     @IBAction func addGramophone(_ sender: Any) {
-        /*
-        print("adding Gramophone, index 3")
+        
+        //print("adding Gramophone, index 3")
         
         let model = getModel(fileLoc: modelNames[3])
         let matrix = reticle.addModelAtReticle(node: model)
         
         loadedModelNodes.append(model)
         modelTransforms.add(transform: matrix_float4x4(matrix), type: UInt32(3))
-        */
-        
-        // turn off the ARScnView background
-        
-        if originalSource == nil {
-            
-            originalSource = sceneView.scene.background.contents
-            
-            sceneView.scene.background.contents = UIColor.black
-            
-        } else {
-            
-            sceneView.scene.background.contents = originalSource
-            
-            originalSource = nil
-        }
-        
-        
         
     }
     
